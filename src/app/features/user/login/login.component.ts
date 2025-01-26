@@ -8,18 +8,12 @@ import { AuthService } from 'src/app/core/auth/auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-  ) {}
+  username: string = '';
+  password: string = '';
 
-  loginAsAdmin() {
-    this.authService.login('admin', 'password');
-    this.router.navigate(['/admin']);
-  }
+  constructor(private authService: AuthService) {}
 
-  loginAsUser() {
-    this.authService.login('user', 'password');
-    this.router.navigate(['/user']);
+  login() {
+    this.authService.login(this.username, this.password);
   }
 }

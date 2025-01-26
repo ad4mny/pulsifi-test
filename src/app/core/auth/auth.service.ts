@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -8,36 +10,48 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: any;
 
-  constructor() {
-    // Initialize the currentUserSubject from local storage or null
+  private apiUrl = 'http://localhost:3000/users'; // Pointing to json-server API
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {
+    // Initialize the currentUserSubject from localStorage or null
     const storedUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     this.currentUserSubject = new BehaviorSubject<any>(storedUser);
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  // Login function that sets the user data and role
   login(username: string, password: string) {
-    // Simulate a real authentication (replace with API calls)
-    const user = { username, role: username === 'admin' ? 'admin' : 'user' };
-
-    // Store user in local storage and notify observers
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    this.currentUserSubject.next(user);
+    return this.http.get<any[]>(`${this.apiUrl}?username=${username}&password=${password}`).subscribe({
+      next: (users) => {
+        if (users.length > 0) {
+          // Successful login: store user data
+          const user = users[0];
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          this.currentUserSubject.next(user);
+          this.router.navigate([user.role === 'admin' ? '/admin/dashboard' : '/user/booking']);
+        } else {
+          alert('Invalid credentials');
+        }
+      },
+      error: (error) => {
+        alert('Error occurred while logging in');
+      },
+    });
   }
 
-  // Logout function to clear the session
   logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+    this.router.navigate(['/login']);
   }
 
-  // Get current user role
-  getRole() {
-    return this.currentUserSubject.value ? this.currentUserSubject.value.role : null;
-  }
-
-  // Check if user is logged in
   isAuthenticated() {
     return this.currentUserSubject.value !== null;
+  }
+
+  getRole() {
+    return this.currentUserSubject.value ? this.currentUserSubject.value.role : null;
   }
 }

@@ -1,3 +1,4 @@
 <h2>Login</h2>
-<button (click)="loginAsAdmin()">Login as Admin</button>
-<button (click)="loginAsUser()">Login as User</button>
+<input type="text" [(ngModel)]="username" placeholder="Username" />
+<input type="password" [(ngModel)]="password" placeholder="Password" />
+<button (click)="login()">Login</button>

@@ -12,21 +12,23 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    // Here lies the checking process of user role
+    // Missing role will display forbidden page
+    // Not login will display login page
+
     const requiredRole = next.data['role'] as string;
 
-    // Check if the user is authenticated and has the required role
     if (this.authService.isAuthenticated()) {
       const userRole = this.authService.getRole();
       if (userRole === requiredRole) {
         return true;
       } else {
-        this.router.navigate(['/forbidden']); // Navigate to a forbidden page
+        this.router.navigate(['/forbidden']);
         return false;
       }
     }
 
-    // Redirect to login if not authenticated
-    this.router.navigate(['/login']);
+    this.router.navigate(['/user/login']);
     return false;
   }
 }
