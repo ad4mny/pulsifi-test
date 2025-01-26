@@ -3,9 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { BookingComponent } from './booking/booking.component';
 import { AuthGuard } from 'src/app/core/auth/auth.guard';
+import { LoginGuard } from 'src/app/core/auth/login.guard';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: 'booking', component: BookingComponent, canActivate: [AuthGuard], data: { role: 'user' } },
 ];
 

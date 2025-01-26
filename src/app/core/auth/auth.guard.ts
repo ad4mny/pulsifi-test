@@ -13,8 +13,8 @@ export class AuthGuard implements CanActivate {
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     // Here lies the checking process of user role
-    // Missing role will display forbidden page
-    // Not login will display login page
+    // Missing role? Show forbidden page
+    // Not login? Show login page
 
     const requiredRole = next.data['role'] as string;
 
