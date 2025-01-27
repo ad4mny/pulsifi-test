@@ -1,14 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 import { BookingComponent } from './booking/booking.component';
-import { AuthGuard } from 'src/app/core/auth/auth.guard';
-import { LoginGuard } from 'src/app/core/auth/login.guard';
+import { UserGuard } from 'src/app/core/guards/user.guard';
 
-const routes: Routes = [
-  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
-  { path: 'booking', component: BookingComponent, canActivate: [AuthGuard], data: { role: 'user' } },
-];
+const routes: Routes = [{ path: 'booking', component: BookingComponent, canActivate: [UserGuard] }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

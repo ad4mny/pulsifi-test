@@ -1,57 +1,92 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { Permission, Role } from 'src/app/models/permissions.types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<any>;
-  public currentUser: any;
+  private apiUrl = 'http://localhost:3000/'; // json-server API
 
-  private apiUrl = 'http://localhost:3000/users'; // Pointing to json-server API
+  private currentUser = signal<any | null>(null); // Store user data signal
+  private userRoles = signal<Role[]>([]);
+
+  private rolePermissions: Record<Role, Permission[]> = {
+    admin: ['viewBooking', 'viewAllBooking', 'cancelBooking'],
+    user: ['viewBooking', 'viewOwnBooking'],
+  };
 
   constructor(
     private http: HttpClient,
     private router: Router,
   ) {
-    // Initialize the currentUserSubject from localStorage or null
+    // First, get user from localStorage if any exist
+    // Else proceed to whatever they want to do below
+
     const storedUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-    this.currentUserSubject = new BehaviorSubject<any>(storedUser);
-    this.currentUser = this.currentUserSubject.asObservable();
+
+    if (storedUser) {
+      this.currentUser.set(storedUser);
+      this.userRoles.set([storedUser.role]);
+    }
   }
 
   login(username: string, password: string) {
-    return this.http.get<any[]>(`${this.apiUrl}?username=${username}&password=${password}`).subscribe({
+    this.http.get<any[]>(`${this.apiUrl}users?username=${username}&password=${password}`).subscribe({
       next: (users) => {
+        console.log(users)
         if (users.length > 0) {
-          // Successful login: store user data
+          // User can login, store the user profile and role
+          // Also, redirect user to booking page to make their booking!
+
           const user = users[0];
           localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          this.router.navigate([user.role === 'admin' ? '/admin/dashboard' : '/user/booking']);
+
+          this.currentUser.set(user);
+          this.userRoles.set([user.role as Role]);
+
+          this.router.navigate([user.role === 'admin' ? '/admin/booking' : '/user/booking']);
         } else {
           alert('Invalid credentials');
         }
       },
-      error: (error) => {
-        alert('Error occurred while logging in');
+      error: () => {
+        alert('Endpoint error!');
       },
     });
   }
 
   logout() {
     localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
+    this.currentUser.set(null);
+    this.userRoles.set([]);
+    this.router.navigate(['/']);
   }
 
   isAuthenticated() {
-    return this.currentUserSubject.value !== null;
+    return this.currentUser() !== null; // Signal not set 
   }
 
   getRole() {
-    return this.currentUserSubject.value ? this.currentUserSubject.value.role : null;
+    return this.currentUser() ? this.currentUser().role : null;
+  }
+
+  getCurrentUser() {
+    return this.currentUser;
+  }
+
+  getPermissions() {
+    const role = this.getRole();
+
+    if (role && this.rolePermissions[role as Role]) {
+      return this.rolePermissions[role as Role];
+    }
+    return []; // No role found :(
+  }
+
+  hasPermission(permission: Permission): boolean {
+    const permissions = this.getPermissions();
+    return permissions.includes(permission);
   }
 }

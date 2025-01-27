@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AuthGuard } from 'src/app/core/auth/auth.guard';
+import { AdminGuard } from 'src/app/core/guards/admin.guard';
+import { BookingComponent } from './booking/booking.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], data: { role: 'admin' } },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AdminGuard] },
+  { path: 'booking', component: BookingComponent, canActivate: [AdminGuard] },
 ];
 
 @NgModule({

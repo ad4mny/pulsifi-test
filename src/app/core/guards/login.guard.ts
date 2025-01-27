@@ -14,8 +14,7 @@ export class LoginGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     // Do you already logged in?
     // Yes: I moved you to booking
-    // Not login?
-    // No worries, I show you login page
+    // Not login? No worries, I show you login page
 
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['/user/booking']);
