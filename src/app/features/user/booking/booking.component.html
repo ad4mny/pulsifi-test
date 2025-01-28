@@ -1,5 +1,12 @@
-<div class="flex h-screen w-full items-center justify-center">
-  <div class="h-2/3 w-full">
+<div class="flex min-h-screen w-full justify-center lg:items-center">
+  <div class="w-full">
+    <div class="my-10 block lg:hidden">
+      <ul class="steps">
+        <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 1 }">Plan Visits</li>
+        <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 2 }">Request Room</li>
+        <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 3 }">Payment</li>
+      </ul>
+    </div>
     <h2 class="mb-5 text-3xl font-semibold">
       <ng-container [ngSwitch]="currentStep()">
         <span *ngSwitchCase="1">Plan Visits</span>
@@ -8,13 +15,13 @@
         <span *ngSwitchDefault>New Booking</span>
       </ng-container>
     </h2>
-    <div class="grid grid-cols-2">
+    <div class="grid grid-cols-1 lg:grid-cols-2">
       <div>
         <app-step-1 [formGroup]="getCurrentFormGroup()" *ngIf="currentStep() === 1"></app-step-1>
         <app-step-2 [formGroup]="getCurrentFormGroup()" *ngIf="currentStep() === 2"></app-step-2>
         <app-step-3 [formGroup]="getCurrentFormGroup()" *ngIf="currentStep() === 3"></app-step-3>
       </div>
-      <div>
+      <div class="hidden lg:block">
         <ul class="steps steps-vertical">
           <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 1 }">Plan Visits</li>
           <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 2 }">Request Room</li>

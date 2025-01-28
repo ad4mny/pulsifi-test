@@ -15,8 +15,8 @@ const routes: Routes = [
   },
   { path: 'user', loadChildren: () => import('./features/user/user.module').then((m) => m.UserModule) },
   { path: 'admin', loadChildren: () => import('./features/admin/admin.module').then((m) => m.AdminModule) },
-  { path: 'forbidden', component: ForbiddenComponent },
-  { path: '**', component: NotFoundComponent },
+  { path: 'forbidden', component: ForbiddenComponent, data: { hideNavbar: true } },
+  { path: '**', component: NotFoundComponent, data: { hideNavbar: true } },
 ];
 
 @NgModule({
