@@ -17,7 +17,7 @@ export function destinationAsyncValidator(http: HttpClient): AsyncValidatorFn {
       return of(null);
     }
 
-    return http.get<any[]>(`${apiUrl}destinations?name=${destination}`).pipe(
+    return http.get<any[]>(`${apiUrl}/destinations?name=${destination}`).pipe(
       debounceTime(300),
       switchMap((response) => {
         return response.length > 0 ? of(null) : of({ destinationInvalid: 'Destination not found' });

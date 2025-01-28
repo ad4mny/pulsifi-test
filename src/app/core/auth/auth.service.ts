@@ -34,7 +34,7 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    this.http.get<any[]>(`${this.apiUrl}users?username=${username}&password=${password}`).subscribe({
+    this.http.get<any[]>(`${this.apiUrl}/users?username=${username}&password=${password}`).subscribe({
       next: (users) => {
         console.log(users);
         if (users.length > 0) {
