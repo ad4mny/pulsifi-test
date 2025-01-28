@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 
 import { UserRoutingModule } from './user-routing.module';
 import { BookingComponent } from './booking/booking.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [BookingComponent],
-  imports: [CommonModule, FormsModule, UserRoutingModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, UserRoutingModule],
 })
 export class UserModule {}

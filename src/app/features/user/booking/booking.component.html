@@ -1,1 +1,25 @@
-<p>booking works!</p>
+<div class="grid grid-cols-2">
+  <div>
+    <div *ngIf="currentStep() === 1">
+      <app-step-1 [formGroup]="getCurrentFormGroup()"></app-step-1>
+    </div>
+    <div *ngIf="currentStep() === 2">
+      <app-step-2 [formGroup]="getCurrentFormGroup()"></app-step-2>
+    </div>
+    <div *ngIf="currentStep() === 3">
+      <app-step-3 [formGroup]="getCurrentFormGroup()"></app-step-3>
+    </div>
+    <div>
+      <button [disabled]="currentStep() > 1" (click)="previousStep()">Back</button>
+      <button *ngIf="currentStep() < 3" (click)="nextStep()">Next</button>
+      <button *ngIf="currentStep() === 3" (click)="submitForm()">Submit</button>
+    </div>
+  </div>
+  <div>
+    <ul class="steps steps-vertical">
+      <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 1 }">Choose Room</li>
+      <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 2 }">Plan Visits</li>
+      <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 3 }">Proceed Payment</li>
+    </ul>
+  </div>
+</div>
