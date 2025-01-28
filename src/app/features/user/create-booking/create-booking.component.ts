@@ -5,10 +5,10 @@ import { dateRangeValidator } from 'src/app/shared/validators/date-range.validat
 import { destinationAsyncValidator } from 'src/app/shared/validators/destination.validators';
 
 @Component({
-  selector: 'app-booking',
-  templateUrl: './booking.component.html',
+  selector: 'app-create-booking',
+  templateUrl: './create-booking.component.html',
 })
-export class BookingComponent {
+export class CreateBookingComponent {
   private stepIndex = signal(1);
   currentStep = computed(() => this.stepIndex());
   bookingForm: FormGroup;
