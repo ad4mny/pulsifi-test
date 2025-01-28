@@ -6,26 +6,26 @@ import { FormGroup } from '@angular/forms';
   template: `
     <div [formGroup]="formGroup" class="grid gap-4">
       <div>
-        <div>
-          <label class="form-control w-full max-w-xs">
-            <div class="label">
-              <span class="label-text">Destination</span>
-            </div>
-            <input
-              id="destination"
-              formControlName="destination"
-              type="text"
-              placeholder="Where to next?"
-              class="input input-bordered w-full max-w-xs"
-              class="input input-bordered w-full max-w-xs" />
-          </label>
-          <div *ngIf="formGroup.get('destination')?.hasError('destinationInvalid')" id="error-label">
-            Destination not found.
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="label-text">Destination</span>
           </div>
-          <div *ngIf="formGroup.get('destination')?.invalid && formGroup.get('destination')?.touched" id="error-label">
-            Destination is required.
-          </div>
+          <input
+            id="destination"
+            formControlName="destination"
+            type="text"
+            placeholder="Where to next?"
+            class="input input-bordered w-full max-w-xs"
+            class="input input-bordered w-full max-w-xs" />
+        </label>
+        <div *ngIf="formGroup.get('destination')?.hasError('destinationInvalid')" id="error-label">
+          Destination not found.
         </div>
+        <div *ngIf="formGroup.get('destination')?.invalid && formGroup.get('destination')?.touched" id="error-label">
+          Destination is required.
+        </div>
+      </div>
+      <div>
         <label class="form-control w-full max-w-xs">
           <div class="label">
             <span class="label-text">Check-in Date</span>
