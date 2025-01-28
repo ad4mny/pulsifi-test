@@ -12,5 +12,19 @@
             "password": "123",
             "role": "user"
         }
+    ],
+    "destination": [
+        {
+            "id": 1,
+            "name": "paris"
+        },
+        {
+            "id": 2,
+            "name": "chicago"
+        },
+        {
+            "id": 3,
+            "name": "berlin"
+        }
     ]
 }

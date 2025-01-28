@@ -1,6 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, computed, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { dateRangeValidator } from 'src/app/shared/validators/date-range.validators';
+import { destinationAsyncValidator } from 'src/app/shared/validators/destination.validators';
 
 @Component({
   selector: 'app-booking',
@@ -11,10 +13,14 @@ export class BookingComponent {
   currentStep = computed(() => this.stepIndex());
   bookingForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+  ) {
     this.bookingForm = this.fb.group({
       step1: this.fb.group(
         {
+          destination: ['', [Validators.required], [destinationAsyncValidator(this.http)]],
           checkInDate: ['', Validators.required],
           checkOutDate: ['', Validators.required],
         },
