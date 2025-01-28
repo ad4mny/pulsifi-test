@@ -1,1 +1,6 @@
-<router-outlet></router-outlet>
+<app-navbar *ngIf="showNavbar"></app-navbar>
+<div class="flex justify-center">
+  <div class="w-full lg:max-w-screen-xl">
+    <router-outlet></router-outlet>
+  </div>
+</div>

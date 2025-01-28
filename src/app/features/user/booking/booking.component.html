@@ -1,25 +1,31 @@
-<div class="grid grid-cols-2">
-  <div>
-    <div *ngIf="currentStep() === 1">
-      <app-step-1 [formGroup]="getCurrentFormGroup()"></app-step-1>
+<div class="flex h-screen w-full items-center justify-center">
+  <div class="h-2/3 w-full">
+    <h2 class="mb-5 text-3xl font-semibold">
+      <ng-container [ngSwitch]="currentStep()">
+        <span *ngSwitchCase="1">Plan Visits</span>
+        <span *ngSwitchCase="2">Request Room</span>
+        <span *ngSwitchCase="3">Proceed Payment</span>
+        <span *ngSwitchDefault>New Booking</span>
+      </ng-container>
+    </h2>
+    <div class="grid grid-cols-2">
+      <div>
+        <app-step-1 [formGroup]="getCurrentFormGroup()" *ngIf="currentStep() === 1"></app-step-1>
+        <app-step-2 [formGroup]="getCurrentFormGroup()" *ngIf="currentStep() === 2"></app-step-2>
+        <app-step-3 [formGroup]="getCurrentFormGroup()" *ngIf="currentStep() === 3"></app-step-3>
+      </div>
+      <div>
+        <ul class="steps steps-vertical">
+          <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 1 }">Plan Visits</li>
+          <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 2 }">Request Room</li>
+          <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 3 }">Proceed Payment</li>
+        </ul>
+      </div>
+      <div class="mt-5 flex gap-2">
+        <button [disabled]="currentStep() === 1" (click)="previousStep()" class="btn">Back</button>
+        <button *ngIf="currentStep() < 3" (click)="nextStep()" class="btn btn-primary">Next</button>
+        <button *ngIf="currentStep() === 3" (click)="submitForm()" class="btn btn-primary">Book Now</button>
+      </div>
     </div>
-    <div *ngIf="currentStep() === 2">
-      <app-step-2 [formGroup]="getCurrentFormGroup()"></app-step-2>
-    </div>
-    <div *ngIf="currentStep() === 3">
-      <app-step-3 [formGroup]="getCurrentFormGroup()"></app-step-3>
-    </div>
-    <div>
-      <button [disabled]="currentStep() > 1" (click)="previousStep()">Back</button>
-      <button *ngIf="currentStep() < 3" (click)="nextStep()">Next</button>
-      <button *ngIf="currentStep() === 3" (click)="submitForm()">Submit</button>
-    </div>
-  </div>
-  <div>
-    <ul class="steps steps-vertical">
-      <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 1 }">Choose Room</li>
-      <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 2 }">Plan Visits</li>
-      <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 3 }">Proceed Payment</li>
-    </ul>
   </div>
 </div>
