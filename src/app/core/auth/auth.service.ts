@@ -2,12 +2,13 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Permission, Role } from 'src/app/models/permissions.types';
+import { environment } from 'src/environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/'; // json-server API
+  private apiUrl = environment.apiUrl;
 
   private currentUser = signal<any | null>(null); // Store user data signal
   private userRoles = signal<Role[]>([]);
@@ -35,7 +36,7 @@ export class AuthService {
   login(username: string, password: string) {
     this.http.get<any[]>(`${this.apiUrl}users?username=${username}&password=${password}`).subscribe({
       next: (users) => {
-        console.log(users)
+        console.log(users);
         if (users.length > 0) {
           // User can login, store the user profile and role
           // Also, redirect user to booking page to make their booking!
@@ -65,7 +66,7 @@ export class AuthService {
   }
 
   isAuthenticated() {
-    return this.currentUser() !== null; // Signal not set 
+    return this.currentUser() !== null; // Signal not set
   }
 
   getRole() {

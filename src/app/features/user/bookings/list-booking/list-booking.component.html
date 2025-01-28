@@ -1,0 +1,56 @@
+<div *ngIf="bookings.length === 0">
+  <p>No bookings found for the current user.</p>
+</div>
+
+<div *ngIf="bookings.length > 0">
+  <h3 class="my-10 text-2xl font-semibold">Your Bookings</h3>
+  <div class="overflow-x-auto">
+    <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Destination</th>
+          <th>Status</th>
+          <th>Stays</th>
+          <th>Room Type</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of bookings; let i = index">
+          <td class="capitalize">{{ i + 1 }}</td>
+          <td class="capitalize">{{ getDestinationName(booking.destinationId) }}</td>
+          <td>
+            <span class="badge badge-success capitalize">{{ booking.status }}</span>
+          </td>
+          <td>
+            <div class="flex w-full items-center gap-1">
+              <p class="whitespace-nowrap break-keep">{{ booking.checkInDate | date: 'MMM d, y' }}</p>
+              <span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                </svg>
+              </span>
+              <p class="whitespace-nowrap break-keep">
+                {{ booking.checkOutDate | date: 'MMM d, y' }}
+              </p>
+            </div>
+          </td>
+          <td>
+            <span class="whitespace-nowrap break-keep">{{ booking.roomType }} Room</span>
+          </td>
+          <td>
+            <!-- <button (click)="cancelBooking(booking.id)">Cancel</button> -->
+            <button class="link">View</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

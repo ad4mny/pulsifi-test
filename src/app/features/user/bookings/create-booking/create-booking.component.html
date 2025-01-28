@@ -1,4 +1,4 @@
-<div class="flex min-h-screen w-full justify-center lg:items-center">
+<div class="flex min-h-screen w-full justify-center">
   <div class="w-full">
     <div class="my-10 block lg:hidden">
       <ul class="steps">
@@ -7,7 +7,7 @@
         <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 3 }">Payment</li>
       </ul>
     </div>
-    <h2 class="mb-5 text-3xl font-semibold">
+    <h2 class="mb-5 mt-10 text-2xl font-semibold">
       <ng-container [ngSwitch]="currentStep()">
         <span *ngSwitchCase="1">Plan Visits</span>
         <span *ngSwitchCase="2">Request Room</span>

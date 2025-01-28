@@ -2,6 +2,9 @@ import { AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/fo
 import { Observable, of } from 'rxjs';
 import { debounceTime, map, catchError, switchMap, first } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environment/environment';
+
+const apiUrl = environment.apiUrl;
 
 export function destinationAsyncValidator(http: HttpClient): AsyncValidatorFn {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -14,7 +17,7 @@ export function destinationAsyncValidator(http: HttpClient): AsyncValidatorFn {
       return of(null);
     }
 
-    return http.get<any[]>(`http://localhost:3000/destinations?name=${destination}`).pipe(
+    return http.get<any[]>(`${apiUrl}destinations?name=${destination}`).pipe(
       debounceTime(300),
       switchMap((response) => {
         return response.length > 0 ? of(null) : of({ destinationInvalid: 'Destination not found' });
