@@ -10,6 +10,7 @@ import { Step2Component } from './bookings/create-booking/forms/step-2.component
 import { Step3Component } from './bookings/create-booking/forms/step-3.component';
 import { ListBookingComponent } from './bookings/list-booking/list-booking.component';
 import { ViewBookingComponent } from './bookings/view-booking/view-booking.component';
+import { TableSortComponent } from 'src/app/core/components/table-sort/table-sort.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,6 @@ import { ViewBookingComponent } from './bookings/view-booking/view-booking.compo
     ListBookingComponent,
     ViewBookingComponent,
   ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, UserRoutingModule],
+  imports: [CommonModule, FormsModule, TableSortComponent, ReactiveFormsModule, UserRoutingModule],
 })
 export class UserModule {}

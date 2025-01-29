@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BookingService } from '../booking.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
+import { sortData } from 'src/app/utils/sort-utils';
 
 @Component({
   selector: 'app-list-booking',
@@ -12,10 +13,24 @@ export class ListBookingComponent implements OnInit {
   destinations: any[] = [];
   userId: number = 0;
 
+  searchText = signal<string>('');
+  statusFilter = signal<string>('');
+  checkInFilter = signal<string>('');
+  checkOutFilter = signal<string>('');
+
+  sortBy = signal<string>('checkInDate');
+  sortOrders: { [key: string]: 'asc' | 'desc' } = {
+    destinationId: 'asc',
+    status: 'asc',
+    stays: 'asc',
+    roomType: 'asc',
+  };
+
   constructor(
     private bookingService: BookingService,
     private authService: AuthService,
   ) {}
+
   ngOnInit(): void {
     const currentUser = this.authService.getCurrentUser();
 
@@ -24,7 +39,6 @@ export class ListBookingComponent implements OnInit {
     }
 
     this.loadBookings();
-    this.loadDestinations();
   }
 
   loadBookings(): void {
@@ -33,14 +47,8 @@ export class ListBookingComponent implements OnInit {
     });
   }
 
-  loadDestinations(): void {
-    this.bookingService.getDestinations().subscribe((destinations) => {
-      this.destinations = destinations;
-    });
-  }
-
-  getDestinationName(destinationId: number): string {
-    const destination = this.destinations.find((dest) => Number(dest.id) === destinationId);
-    return destination ? destination.name : 'Unknown';
+  sort(sortBy: string): void {
+    this.sortOrders[sortBy] = this.sortOrders[sortBy] === 'asc' ? 'desc' : 'asc';
+    this.bookings = sortData(this.bookings, sortBy, this.sortOrders[sortBy]);
   }
 }

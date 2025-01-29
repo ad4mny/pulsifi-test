@@ -12,14 +12,10 @@ export class BookingService {
   constructor(private http: HttpClient) {}
 
   getBookings(userId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/bookings?userId=${userId}`);
+    return this.http.get<any[]>(`${this.apiUrl}/bookings?userId=${userId}&_embed=destination`);
   }
 
-  getDestinations(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/destinations`);
-  }
-
-  getTransactions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/transactions`);
+  getTransactions(bookingId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/transactions?bookingId=${bookingId}`);
   }
 }

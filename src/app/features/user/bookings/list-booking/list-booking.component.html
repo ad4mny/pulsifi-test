@@ -9,23 +9,48 @@
       <thead>
         <tr>
           <th></th>
-          <th>Destination</th>
-          <th>Status</th>
-          <th>Stays</th>
-          <th>Room Type</th>
+          <th>
+            <div class="flex cursor-pointer items-center gap-1">
+              <span class="grow">Destination</span>
+              <app-table-sort
+                [sortOrder]="sortOrders['destinationId']"
+                (click)="sort('destinationId')"></app-table-sort>
+            </div>
+          </th>
+          <th>
+            <div class="flex cursor-pointer items-center gap-1">
+              <span class="grow">Status</span>
+              <app-table-sort [sortOrder]="sortOrders['status']" (click)="sort('status')"></app-table-sort>
+            </div>
+          </th>
+          <th>
+            <div class="flex cursor-pointer items-center gap-1">
+              <span class="grow">Stays</span>
+              <app-table-sort [sortOrder]="sortOrders['stays']" (click)="sort('stays')"></app-table-sort>
+            </div>
+          </th>
+          <th>
+            <div class="flex cursor-pointer items-center gap-1">
+              <span class="grow">Room Type</span>
+              <app-table-sort [sortOrder]="sortOrders['roomType']" (click)="sort('roomType')"></app-table-sort>
+            </div>
+          </th>
+
           <th></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let booking of bookings; let i = index">
           <td class="capitalize">{{ i + 1 }}</td>
-          <td class="capitalize">{{ getDestinationName(booking.destinationId) }}</td>
+          <td class="capitalize">{{ booking.destination.name }}</td>
           <td>
-            <span class="badge badge-success capitalize">{{ booking.status }}</span>
+            <span class="badge capitalize" [ngClass]="{ 'badge-success': booking.status === 'confirmed' }">
+              {{ booking.status }}
+            </span>
           </td>
           <td>
             <div class="flex w-full items-center gap-1">
-              <p class="whitespace-nowrap break-keep">{{ booking.checkInDate | date: 'MMM d, y' }}</p>
+              <p class="whitespace-nowrap break-keep">{{ booking.checkInDate | date: 'd MMM y' }}</p>
               <span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +63,7 @@
                 </svg>
               </span>
               <p class="whitespace-nowrap break-keep">
-                {{ booking.checkOutDate | date: 'MMM d, y' }}
+                {{ booking.checkOutDate | date: 'd MMM y' }}
               </p>
             </div>
           </td>

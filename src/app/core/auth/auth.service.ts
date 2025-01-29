@@ -22,10 +22,10 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
   ) {
-    // First, get user from localStorage if any exist
+    // First, get user from sessionStorage if any exist
     // Else proceed to whatever they want to do below
 
-    const storedUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    const storedUser = JSON.parse(sessionStorage.getItem('currentUser') || 'null');
 
     if (storedUser) {
       this.currentUser.set(storedUser);
@@ -42,7 +42,7 @@ export class AuthService {
           // Also, redirect user to booking page to make their booking!
 
           const user = users[0];
-          localStorage.setItem('currentUser', JSON.stringify(user));
+          sessionStorage.setItem('currentUser', JSON.stringify(user));
 
           this.currentUser.set(user);
           this.userRoles.set([user.role as Role]);
@@ -59,7 +59,7 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentUser');
     this.currentUser.set(null);
     this.userRoles.set([]);
     this.router.navigate(['/']);
