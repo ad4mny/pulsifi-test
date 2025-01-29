@@ -1,9 +1,44 @@
-<div *ngIf="bookings.length === 0">
+<div *ngIf="filteredBookings.length === 0">
   <p>No bookings found for the current user.</p>
 </div>
 
-<div *ngIf="bookings.length > 0">
-  <h3 class="my-10 text-2xl font-semibold">Your Bookings</h3>
+<div *ngIf="filteredBookings.length > 0" class="mt-10 grid gap-6">
+  <h3 class="text-2xl font-semibold">Your Bookings</h3>
+  <div class="flex gap-2">
+    <label class="form-control w-full max-w-xs">
+      <div class="label">
+        <span class="label-text">Search Destination</span>
+      </div>
+      <input
+        type="text"
+        (input)="onSearch($event)"
+        placeholder="Where is the place?"
+        class="input input-bordered w-full max-w-xs" />
+    </label>
+    <label class="form-control w-full max-w-xs">
+      <div class="label">
+        <span class="label-text">Check In</span>
+      </div>
+      <input type="date" class="input input-bordered w-full max-w-xs" (change)="checkInFilter()" />
+    </label>
+    <label class="form-control w-full max-w-xs">
+      <div class="label">
+        <span class="label-text">Check Out</span>
+      </div>
+      <input type="date" class="input input-bordered w-full max-w-xs" (change)="checkOutFilter()" />
+    </label>
+    <label class="form-control w-full max-w-xs">
+      <div class="label">
+        <span class="label-text">Booking Status</span>
+      </div>
+      <select class="select select-bordered">
+        <option disabled selected>All</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="pending">Pending</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </label>
+  </div>
   <div class="overflow-x-auto">
     <table class="table">
       <thead>
@@ -35,12 +70,11 @@
               <app-table-sort [sortOrder]="sortOrders['roomType']" (click)="sort('roomType')"></app-table-sort>
             </div>
           </th>
-
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let booking of bookings; let i = index">
+        <tr *ngFor="let booking of filteredBookings; let i = index">
           <td class="capitalize">{{ i + 1 }}</td>
           <td class="capitalize">{{ booking.destination.name }}</td>
           <td>
