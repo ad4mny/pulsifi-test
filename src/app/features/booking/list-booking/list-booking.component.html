@@ -128,7 +128,18 @@
             </td>
             <td>
               <div class="flex items-center gap-2">
-                <button (click)="cancelBooking(booking.id)" *acIf="['admin']" class="link link-error">Cancel</button>
+                <button
+                  (click)="bookingId.set(booking.id); deleteBookingConfirmation = true"
+                  *acIf="['admin']"
+                  class="link link-error">
+                  Delete
+                </button>
+                <button
+                  (click)="bookingId.set(booking.id); cancelBookingConfirmation = true"
+                  *acIf="['admin']"
+                  class="link link-warning">
+                  Cancel Booking
+                </button>
                 <a routerLink="/bookings/view" *acIf="['admin', 'user']" class="link">View</a>
               </div>
             </td>
@@ -148,3 +159,28 @@
 <ng-template #emptyResult>
   <tr><td>No booking founds</td></tr>
 </ng-template>
+
+<app-dialog-two-action
+  [isVisible]="deleteBookingConfirmation"
+  title="Delete Confirmation"
+  message="This process cannot be undone. Proceed?"
+  button1="Delete Booking"
+  button2="Cancel"
+  (isContinue)="deleteBooking()"
+  (isVisibleChange)="deleteBookingConfirmation = $event"></app-dialog-two-action>
+
+<app-dialog-two-action
+  [isVisible]="cancelBookingConfirmation"
+  title="Cancelation Confirmation"
+  message="This will cancel this booking and revert the payment process."
+  button1="Cancel Booking"
+  button2="Close"
+  (isContinue)="cancelBooking()"
+  (isVisibleChange)="cancelBookingConfirmation = $event"></app-dialog-two-action>
+
+<app-dialog-single-action
+  [isVisible]="errorDialog"
+  [message]="errorMessage"
+  [title]="'Error Occurred'"
+  [button]="'Close'"
+  (isVisibleChange)="errorDialog = $event"></app-dialog-single-action>

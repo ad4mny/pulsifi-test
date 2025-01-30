@@ -19,6 +19,6 @@ export interface Booking {
   roomType: string;
   addOns: string;
   cancelReason: string;
-  cancelBy: string;
+  cancelBy: number;
   destination?: Destination;
 }

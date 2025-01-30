@@ -54,6 +54,10 @@ export class BookingService {
     );
   }
 
+  getBookingById(bookingId: number): Observable<Booking> {
+    return this.http.get<Booking>(`${this.apiUrl}/bookings/${bookingId}`);
+  }
+
   createBooking(formData: Booking): Observable<Booking> {
     const headers = new HttpHeaders({
       Accept: 'application/json',
@@ -61,5 +65,19 @@ export class BookingService {
     });
 
     return this.http.post<Booking>(`${this.apiUrl}/bookings`, formData, { headers });
+  }
+
+  deleteBooking(bookingId: number): Observable<boolean> {
+    console.log(bookingId);
+    return this.http.delete<boolean>(`${this.apiUrl}/bookings/${bookingId}`);
+  }
+
+  updateBooking(formData: Booking): Observable<Booking> {
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.put<Booking>(`${this.apiUrl}/bookings/${formData.id}`, formData, { headers });
   }
 }

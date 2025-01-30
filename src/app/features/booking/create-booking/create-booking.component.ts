@@ -79,7 +79,7 @@ export class CreateBookingComponent {
           checkOutDate: formData.step1.checkOutDate,
           userId: user()!.id,
           status: 'confirmed',
-          cancelBy: '',
+          cancelBy: 1,
           cancelReason: '',
           roomType: formData.step2.roomType,
           addOns: formData.step2.addOns,

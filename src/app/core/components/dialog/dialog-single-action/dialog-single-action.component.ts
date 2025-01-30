@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-dialog-single-action',
@@ -20,13 +20,14 @@ import { Component, Input } from '@angular/core';
   `,
 })
 export class DialogSingleActionComponent {
-  @Input() modalId: string = '';
   @Input() title: string = '';
   @Input() message: string = '';
   @Input() button: string = 'Ok';
   @Input() isVisible: boolean = false;
 
+  @Output() isVisibleChange = new EventEmitter<boolean>();
+
   close() {
-    this.isVisible = false;
+    this.isVisibleChange.emit(false);
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { debounceTime, distinctUntilChanged, of, Subject, switchMap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, of, Subject, switchMap } from 'rxjs';
 import { BookingService } from '../booking.service';
 import { Booking, BookingFilters } from '../booking.model';
 import { AuthService } from 'src/app/core/auth/auth.service';
@@ -19,6 +19,7 @@ export class ListBookingComponent implements OnInit {
   filteredBookings = signal(this.bookings);
 
   userId: number = 0;
+  bookingId = signal<number>(0);
 
   searchFilter = new Subject<string>();
 
@@ -39,6 +40,12 @@ export class ListBookingComponent implements OnInit {
   itemPerPage = environment.itemPerPage;
   totalItems = 0;
   currentPage = 1;
+
+  errorDialog: boolean = false;
+  errorMessage: string = '';
+
+  cancelBookingConfirmation: boolean = false;
+  deleteBookingConfirmation: boolean = false;
 
   constructor(
     private bookingService: BookingService,
@@ -120,7 +127,48 @@ export class ListBookingComponent implements OnInit {
       });
   }
 
-  cancelBooking(bookingId: number) {}
+  cancelBooking() {
+    this.bookingService
+      .getBookingById(this.bookingId())
+      .pipe(
+        switchMap((booking: Booking) => {
+          if (!booking) {
+            throw new Error('Booking not found');
+          }
+          const user = this.authService.getCurrentUser();
+
+          booking.status = 'cancelled';
+          booking.cancelReason = 'cancelled by admin';
+          booking.cancelBy = user()!.id;
+
+          return this.bookingService.updateBooking(booking);
+        }),
+        catchError((error) => {
+          this.errorDialog = true;
+          this.errorMessage = error;
+          return of(null);
+        }),
+      )
+      .subscribe({
+        next: () => this.loadBookings(),
+        error: (error) => {
+          this.errorDialog = true;
+          this.errorMessage = error;
+        },
+        complete: () => (this.cancelBookingConfirmation = false),
+      });
+  }
+
+  deleteBooking() {
+    this.bookingService.deleteBooking(this.bookingId()).subscribe({
+      next: (response) => {},
+      complete: () => {
+        this.currentPage = 1;
+        this.deleteBookingConfirmation = false;
+        this.loadBookings();
+      },
+    });
+  }
 
   saveFilter(): void {
     const state = {

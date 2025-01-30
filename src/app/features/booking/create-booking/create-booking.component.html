@@ -38,8 +38,8 @@
 </div>
 
 <app-dialog-single-action
-  [id]="'createBookingSuccess'"
+  [isVisible]="createBookingSuccess"
   [message]="'Your booking has been created successfully!'"
   [title]="'Confirmed!'"
   [button]="'Close'"
-  [isVisible]="createBookingSuccess"></app-dialog-single-action>
+  (isVisibleChange)="createBookingSuccess = $event"></app-dialog-single-action>
