@@ -15,8 +15,8 @@ export class AuthService {
   private userRoles = signal<Role[]>([]);
 
   private rolePermissions: Record<Role, Permission[]> = {
-    admin: ['viewBooking', 'viewAllBooking', 'cancelBooking'],
-    user: ['viewBooking', 'viewOwnBooking'],
+    admin: ['adminDashboard', 'viewBooking', 'viewAllBooking', 'cancelBooking'],
+    user: ['viewBooking', 'viewOwnBooking', 'createBooking'],
   };
 
   constructor(

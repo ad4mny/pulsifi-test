@@ -7,6 +7,7 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class NavbarComponent {
   canCreateBooking = this.authService.hasPermission('createBooking');
+  canViewAdminDashboard = this.authService.hasPermission('adminDashboard');
 
   constructor(private authService: AuthService) {}
 
