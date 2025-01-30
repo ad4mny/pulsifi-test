@@ -1,0 +1,25 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { TableSortComponent } from 'src/app/core/components/table-sort/table-sort.component';
+import { CreateBookingComponent } from './create-booking/create-booking.component';
+import { Step1Component } from './create-booking/forms/step-1.component';
+import { Step2Component } from './create-booking/forms/step-2.component';
+import { Step3Component } from './create-booking/forms/step-3.component';
+import { ListBookingComponent } from './list-booking/list-booking.component';
+import { ViewBookingComponent } from './view-booking/view-booking.component';
+import { BookingRoutingModule } from './booking-routing.module';
+
+@NgModule({
+  declarations: [
+    CreateBookingComponent,
+    Step1Component,
+    Step2Component,
+    Step3Component,
+    ListBookingComponent,
+    ViewBookingComponent,
+  ],
+  imports: [CommonModule, FormsModule, TableSortComponent, ReactiveFormsModule, BookingRoutingModule],
+})
+export class BookingModule {}

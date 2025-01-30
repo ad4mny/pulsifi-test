@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, of } from 'rxjs';
 import { environment } from 'src/environment/environment';
-
-interface BookingFilters {
-  checkInDate: string;
-  checkOutDate: string;
-  status: string;
-}
+import { BookingFilters } from './booking.model';
 
 @Injectable({
   providedIn: 'root',

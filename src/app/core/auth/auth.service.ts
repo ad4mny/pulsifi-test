@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Permission, Role } from 'src/app/models/permissions.types';
+import { Permission, Role } from 'src/app/core/auth/models/permissions.types';
 import { environment } from 'src/environment/environment';
 
 @Injectable({

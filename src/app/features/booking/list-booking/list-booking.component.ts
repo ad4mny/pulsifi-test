@@ -1,14 +1,9 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { debounceTime, distinctUntilChanged, of, Subject, switchMap } from 'rxjs';
 import { BookingService } from '../booking.service';
+import { BookingFilters } from '../booking.model';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { sortData } from 'src/app/utils/sort-utils';
-
-interface BookingFilters {
-  checkInDate: string;
-  checkOutDate: string;
-  status: string;
-}
 
 @Component({
   selector: 'app-list-booking',
