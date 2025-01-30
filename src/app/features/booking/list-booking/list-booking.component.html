@@ -110,8 +110,12 @@
               <span class="whitespace-nowrap break-keep">{{ booking.roomType }} Room</span>
             </td>
             <td>
-              <!-- <button (click)="cancelBooking(booking.id)">Cancel</button> -->
-              <button class="link">View</button>
+              <div class="flex items-center gap-2">
+                <button (click)="cancelBooking(booking.id)" *ngIf="canCancelBooking" class="link link-error">
+                  Cancel
+                </button>
+                <a routerLink="/booking/view" *ngIf="canViewBooking" class="link">View</a>
+              </div>
             </td>
           </tr>
         </ng-container>

@@ -10,6 +10,9 @@ import { sortData } from 'src/app/utils/sort-utils';
   templateUrl: './list-booking.component.html',
 })
 export class ListBookingComponent implements OnInit {
+  canCancelBooking = this.authService.hasPermission('cancelBooking');
+  canViewBooking = this.authService.hasPermission('viewBooking');
+
   bookings: any[] = [];
   filteredBookings = signal(this.bookings);
 
@@ -88,4 +91,6 @@ export class ListBookingComponent implements OnInit {
         }
       });
   }
+
+  cancelBooking(bookingId: number) {}
 }

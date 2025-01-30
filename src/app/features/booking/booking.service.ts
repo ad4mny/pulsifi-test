@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, of } from 'rxjs';
 import { environment } from 'src/environment/environment';
 import { BookingFilters } from './booking.model';
+import { AuthService } from 'src/app/core/auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +11,17 @@ import { BookingFilters } from './booking.model';
 export class BookingService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
 
   getBookings(userId: number, filters: BookingFilters): Observable<any[]> {
-    let params = `?userId=${userId}&_expand=destination`;
+    let params = `?_expand=destination`;
+
+    if (this.authService.getRole() !== 'admin') {
+      params += `&userId=${userId}`;
+    }
 
     if (filters.checkInDate) {
       params += `&checkInDate=${filters.checkInDate}`;

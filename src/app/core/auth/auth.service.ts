@@ -47,7 +47,7 @@ export class AuthService {
           this.currentUser.set(user);
           this.userRoles.set([user.role as Role]);
 
-          this.router.navigate([user.role === 'admin' ? '/admin/booking' : '/user/booking']);
+          this.router.navigate(['/bookings']);
         } else {
           alert('Invalid credentials');
         }
