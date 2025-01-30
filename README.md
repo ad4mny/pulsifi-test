@@ -77,7 +77,7 @@ Make sure you have the following installed:
 1. Start the JSON Server:
 
    ```bash
-   npx json-server --watch db.json
+   npm run json-server
    ```
 
    This will start the JSON Server and watch the `db.json` file for any changes. It will run on `http://localhost:3000`.
