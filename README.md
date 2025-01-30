@@ -132,8 +132,10 @@ Make sure you have the following installed:
 
 ## Some of the API Endpoints
 
-- `POST /bookings`: Create a new booking.
-- `GET /bookings`: Get all bookings.
+- `POST /bookings`: Create a new booking (user).
+- `GET /bookings`: Get all bookings (user/admin).
+- `PUT /bookings`: Cancel booking (admin).
+- `DELETE /bookings`: Delete booking (admin).
 
 ## Credentials
 
