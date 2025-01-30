@@ -10,6 +10,7 @@ import { Step3Component } from './create-booking/forms/step-3.component';
 import { ListBookingComponent } from './list-booking/list-booking.component';
 import { ViewBookingComponent } from './view-booking/view-booking.component';
 import { BookingRoutingModule } from './booking-routing.module';
+import { DialogSingleActionComponent } from 'src/app/core/components/dialog/dialog-single-action/dialog-single-action.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,6 @@ import { BookingRoutingModule } from './booking-routing.module';
     ListBookingComponent,
     ViewBookingComponent,
   ],
-  imports: [CommonModule, FormsModule, TableSortComponent, ReactiveFormsModule, BookingRoutingModule],
+  imports: [CommonModule, FormsModule, TableSortComponent, ReactiveFormsModule, BookingRoutingModule, DialogSingleActionComponent],
 })
 export class BookingModule {}

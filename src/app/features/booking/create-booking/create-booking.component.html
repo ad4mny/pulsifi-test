@@ -7,7 +7,7 @@
         <li class="step" [ngClass]="{ 'step-primary': currentStep() >= 3 }">Payment</li>
       </ul>
     </div>
-    <h2 class="mb-5 mt-10 text-2xl font-semibold">
+    <h2 class="mb-5 text-2xl font-semibold">
       <ng-container [ngSwitch]="currentStep()">
         <span *ngSwitchCase="1">Plan Visits</span>
         <span *ngSwitchCase="2">Request Room</span>
@@ -36,3 +36,10 @@
     </div>
   </div>
 </div>
+
+<app-dialog-single-action
+  [id]="'createBookingSuccess'"
+  [message]="'Your booking has been created successfully!'"
+  [title]="'Confirmed!'"
+  [button]="'Close'"
+  [isVisible]="createBookingSuccess"></app-dialog-single-action>

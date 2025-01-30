@@ -4,6 +4,7 @@ import { BookingService } from '../booking.service';
 import { Booking, BookingFilters } from '../booking.model';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { sortData } from 'src/app/utils/sort-utils';
+import { DestinationService } from 'src/app/services/destination.service';
 
 @Component({
   selector: 'app-list-booking',
@@ -36,6 +37,7 @@ export class ListBookingComponent implements OnInit {
 
   constructor(
     private bookingService: BookingService,
+    private destinationService: DestinationService,
     private authService: AuthService,
   ) {}
 
@@ -47,7 +49,7 @@ export class ListBookingComponent implements OnInit {
     }
 
     this.loadBookings();
-    this.searchDestination();
+    this.queryDestination();
   }
 
   loadBookings(): void {
@@ -72,7 +74,7 @@ export class ListBookingComponent implements OnInit {
     this.searchFilter.next(element.value);
   }
 
-  searchDestination() {
+  queryDestination() {
     this.searchFilter
       .pipe(
         debounceTime(300),
@@ -81,7 +83,7 @@ export class ListBookingComponent implements OnInit {
           if (!query) {
             return of(this.bookings);
           } else {
-            return this.bookingService.searchDestination(query);
+            return this.destinationService.searchDestination(query);
           }
         }),
       )

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { catchError, Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { BookingFilters } from './booking.model';
+import { Booking, BookingFilters, Destination } from './booking.model';
 import { AuthService } from 'src/app/core/auth/auth.service';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class BookingService {
     private authService: AuthService,
   ) {}
 
-  getBookings(userId: number, filters: BookingFilters): Observable<any[]> {
+  getBookings(userId: number, filters: BookingFilters): Observable<Booking[]> {
     let params = `?_expand=destination`;
 
     if (this.authService.getRole() !== 'admin') {
@@ -35,18 +35,15 @@ export class BookingService {
       params += `&status=${filters.status}`;
     }
 
-    return this.http.get<any[]>(`${this.apiUrl}/bookings${params}`);
+    return this.http.get<Booking[]>(`${this.apiUrl}/bookings${params}`);
   }
 
-  getTransactions(bookingId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/transactions?bookingId=${bookingId}`);
-  }
+  createBooking(formData: Booking): Observable<Booking> {
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    });
 
-  searchDestination(query: string): Observable<any[]> {
-    if (!query.trim()) {
-      return of([]);
-    }
-
-    return this.http.get<any[]>(`${this.apiUrl}/destinations?name_like=${query}`).pipe(catchError(() => of([])));
+    return this.http.post<Booking>(`${this.apiUrl}/bookings`, formData, { headers });
   }
 }
