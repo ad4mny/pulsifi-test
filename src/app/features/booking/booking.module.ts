@@ -11,6 +11,7 @@ import { ListBookingComponent } from './list-booking/list-booking.component';
 import { ViewBookingComponent } from './view-booking/view-booking.component';
 import { BookingRoutingModule } from './booking-routing.module';
 import { DialogSingleActionComponent } from 'src/app/core/components/dialog/dialog-single-action/dialog-single-action.component';
+import { AcIfDirective } from 'src/app/core/directives/ac-if.directive';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,15 @@ import { DialogSingleActionComponent } from 'src/app/core/components/dialog/dial
     Step3Component,
     ListBookingComponent,
     ViewBookingComponent,
+    AcIfDirective,
   ],
-  imports: [CommonModule, FormsModule, TableSortComponent, ReactiveFormsModule, BookingRoutingModule, DialogSingleActionComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TableSortComponent,
+    ReactiveFormsModule,
+    BookingRoutingModule,
+    DialogSingleActionComponent,
+  ],
 })
 export class BookingModule {}

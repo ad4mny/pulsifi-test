@@ -11,6 +11,7 @@ import { User } from './user.model';
 export class AuthService {
   private apiUrl = environment.apiUrl;
 
+  // Signals to store current user and roles
   private currentUser = signal<User | null>(null);
   private userRoles = signal<Role[]>([]);
 
@@ -23,9 +24,7 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
   ) {
-    // First, get user from sessionStorage if any exist
-    // Else proceed to whatever they want to do below
-
+    // First, get user from sessionStorage if any exists
     const storedUser = JSON.parse(sessionStorage.getItem('currentUser') || 'null');
 
     if (storedUser) {
@@ -37,7 +36,6 @@ export class AuthService {
   login(username: string, password: string) {
     this.http.get<any[]>(`${this.apiUrl}/users?username=${username}&password=${password}`).subscribe({
       next: (users) => {
-        console.log(users);
         if (users.length > 0) {
           // User can login, store the user profile and role
           // Also, redirect user to booking page to make their booking!
@@ -67,7 +65,7 @@ export class AuthService {
   }
 
   isAuthenticated() {
-    return this.currentUser() !== null; // Signal not set
+    return this.currentUser() !== null;
   }
 
   getRole() {
@@ -79,13 +77,16 @@ export class AuthService {
     return this.currentUser;
   }
 
-  getPermissions() {
-    const role = this.getRole();
+  getRoles(): Role[] {
+    return this.userRoles();
+  }
 
-    if (role && this.rolePermissions[role as Role]) {
-      return this.rolePermissions[role as Role];
+  getPermissions(): Permission[] {
+    const role = this.getRole();
+    if (role && this.rolePermissions[role]) {
+      return this.rolePermissions[role];
     }
-    return []; // No role found :(
+    return [];
   }
 
   hasPermission(permission: Permission): boolean {

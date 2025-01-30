@@ -111,10 +111,8 @@
             </td>
             <td>
               <div class="flex items-center gap-2">
-                <button (click)="cancelBooking(booking.id)" *ngIf="canCancelBooking" class="link link-error">
-                  Cancel
-                </button>
-                <a routerLink="/bookings/view" *ngIf="canViewBooking" class="link">View</a>
+                <button (click)="cancelBooking(booking.id)" *acIf="['admin']" class="link link-error">Cancel</button>
+                <a routerLink="/bookings/view" *acIf="['admin', 'user']" class="link">View</a>
               </div>
             </td>
           </tr>
