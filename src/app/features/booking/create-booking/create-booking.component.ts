@@ -69,7 +69,9 @@ export class CreateBookingComponent {
     if (this.bookingForm.valid) {
       const user = this.authService.getCurrentUser();
       const formData = this.bookingForm.value;
-      const destination = await this.destinationService.getDestinationByName(formData.step1.destination).toPromise();
+      const destination = await this.destinationService
+        .getDestinationByName(formData.step1.destination.toLowerCase())
+        .toPromise();
 
       if (destination) {
         const booking: Booking = {
