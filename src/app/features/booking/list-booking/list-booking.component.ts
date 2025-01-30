@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { debounceTime, distinctUntilChanged, of, Subject, switchMap } from 'rxjs';
 import { BookingService } from '../booking.service';
-import { BookingFilters } from '../booking.model';
+import { Booking, BookingFilters } from '../booking.model';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { sortData } from 'src/app/utils/sort-utils';
 
@@ -13,7 +13,7 @@ export class ListBookingComponent implements OnInit {
   canCancelBooking = this.authService.hasPermission('cancelBooking');
   canViewBooking = this.authService.hasPermission('viewBooking');
 
-  bookings: any[] = [];
+  bookings: Booking[] = [];
   filteredBookings = signal(this.bookings);
 
   userId: number = 0;
@@ -43,7 +43,7 @@ export class ListBookingComponent implements OnInit {
     const currentUser = this.authService.getCurrentUser();
 
     if (currentUser()) {
-      this.userId = currentUser().id;
+      this.userId = currentUser()!.id;
     }
 
     this.loadBookings();
@@ -52,7 +52,13 @@ export class ListBookingComponent implements OnInit {
 
   loadBookings(): void {
     this.bookingService.getBookings(this.userId, this.filters).subscribe((bookings) => {
-      this.filteredBookings.set((this.bookings = bookings));
+      this.bookings = bookings.map((item) => ({
+        ...item,
+        checkInDate: new Date(item.checkInDate),
+        checkOutDate: new Date(item.checkOutDate),
+        destination: item.destination ?? undefined,
+      }));
+      this.filteredBookings.set(this.bookings); // Renew filteredBookings set
     });
   }
 

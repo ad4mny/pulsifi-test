@@ -1,8 +1,9 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Permission, Role } from 'src/app/core/auth/models/permissions.types';
+import { Permission, Role } from 'src/app/core/auth/auth.types';
 import { environment } from 'src/environment/environment';
+import { User } from './user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ import { environment } from 'src/environment/environment';
 export class AuthService {
   private apiUrl = environment.apiUrl;
 
-  private currentUser = signal<any | null>(null); // Store user data signal
+  private currentUser = signal<User | null>(null);
   private userRoles = signal<Role[]>([]);
 
   private rolePermissions: Record<Role, Permission[]> = {
@@ -70,7 +71,8 @@ export class AuthService {
   }
 
   getRole() {
-    return this.currentUser() ? this.currentUser().role : null;
+    const user = this.currentUser();
+    return user ? user.role : null;
   }
 
   getCurrentUser() {

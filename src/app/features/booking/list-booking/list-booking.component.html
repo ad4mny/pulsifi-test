@@ -81,7 +81,7 @@
         <ng-container *ngIf="filteredBookings().length !== 0; else emptyResult">
           <tr *ngFor="let booking of filteredBookings(); let i = index">
             <td class="capitalize">{{ i + 1 }}</td>
-            <td class="capitalize">{{ booking.destination.name }}</td>
+            <td class="capitalize">{{ booking.destination?.name }}</td>
             <td>
               <span class="badge capitalize" [ngClass]="{ 'badge-success': booking.status === 'confirmed' }">
                 {{ booking.status }}

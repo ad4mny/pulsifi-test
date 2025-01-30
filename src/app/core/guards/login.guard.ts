@@ -17,7 +17,7 @@ export class LoginGuard implements CanActivate {
     // Not login? No worries, I show you login page
 
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/user/booking']);
+      this.router.navigate(['/bookings']);
       return false;
     }
 
