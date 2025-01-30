@@ -41,8 +41,7 @@ export class CreateBookingComponent {
       }),
       step3: this.fb.group({
         paymentMethod: ['', Validators.required],
-        cardNumber: [''],
-        // cardNumber: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
+        cardNumber: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
       }),
     });
   }
