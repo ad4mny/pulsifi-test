@@ -5,6 +5,7 @@ import { Booking, BookingFilters } from '../booking.model';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { sortData } from 'src/app/utils/sort-utils';
 import { DestinationService } from 'src/app/shared/services/destination.service';
+import { environment } from 'src/environment/environment';
 
 @Component({
   selector: 'app-list-booking',
@@ -35,6 +36,10 @@ export class ListBookingComponent implements OnInit {
     roomType: 'asc',
   };
 
+  itemPerPage = environment.itemPerPage;
+  totalItems = 0;
+  currentPage = 1;
+
   constructor(
     private bookingService: BookingService,
     private destinationService: DestinationService,
@@ -51,10 +56,19 @@ export class ListBookingComponent implements OnInit {
     this.loadFilter(); // Load saved filters and sorting from sessionStorage
     this.loadBookings();
     this.queryDestination();
+
+    this.bookingService.totalItems$.subscribe((totalItems) => {
+      this.totalItems = totalItems;
+    });
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.loadBookings();
   }
 
   loadBookings(): void {
-    this.bookingService.getBookings(this.userId, this.filters).subscribe({
+    this.bookingService.getBookings(this.userId, this.filters, this.currentPage).subscribe({
       next: (bookings) => {
         this.bookings = bookings.map((item) => ({
           ...item,
@@ -110,6 +124,7 @@ export class ListBookingComponent implements OnInit {
 
   saveFilter(): void {
     const state = {
+      currentPage: this.currentPage,
       filters: this.filters,
       sortBy: this.sortBy(),
       sortOrders: this.sortOrders,
@@ -121,6 +136,7 @@ export class ListBookingComponent implements OnInit {
     const storedState = sessionStorage.getItem('bookingFilter');
     if (storedState) {
       const parsedState = JSON.parse(storedState);
+      this.currentPage = parsedState.currentPage || this.currentPage;
       this.filters = parsedState.filters || this.filters;
       this.sortBy.set(parsedState.sortBy || 'checkInDate');
       this.sortOrders = parsedState.sortOrders || this.sortOrders;

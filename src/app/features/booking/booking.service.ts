@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { Booking, BookingFilters, Destination } from './booking.model';
+import { Booking, BookingFilters } from './booking.model';
 import { AuthService } from 'src/app/core/auth/auth.service';
 
 @Injectable({
@@ -10,13 +10,15 @@ import { AuthService } from 'src/app/core/auth/auth.service';
 })
 export class BookingService {
   private apiUrl = environment.apiUrl;
+  private totalItemsSubject = new BehaviorSubject<number>(0);
+  totalItems$ = this.totalItemsSubject.asObservable();
 
   constructor(
     private http: HttpClient,
     private authService: AuthService,
   ) {}
 
-  getBookings(userId: number, filters: BookingFilters): Observable<Booking[]> {
+  getBookings(userId: number, filters: BookingFilters, page: number): Observable<Booking[]> {
     let params = `?_expand=destination`;
 
     if (this.authService.getRole() !== 'admin') {
@@ -35,7 +37,21 @@ export class BookingService {
       params += `&status=${filters.status}`;
     }
 
-    return this.http.get<Booking[]>(`${this.apiUrl}/bookings${params}`);
+    if (page !== 0) {
+      params += `&_page=${page}&_limit=${environment.itemPerPage}`;
+    }
+
+    return this.http.get<Booking[]>(`${this.apiUrl}/bookings${params}`, { observe: 'response' }).pipe(
+      map((response: HttpResponse<Booking[]>) => {
+        // Get the total count from the response headers
+        const totalItems = response.headers.get('X-Total-Count')
+          ? parseInt(response.headers.get('X-Total-Count')!, 10)
+          : 0;
+
+        this.totalItemsSubject.next(totalItems);
+        return response.body ?? [];
+      }),
+    );
   }
 
   createBooking(formData: Booking): Observable<Booking> {

@@ -37,7 +37,7 @@
     {
       "id": 1,
       "userId": 2,
-      "destinationId": 1,
+      "destinationId": 3,
       "status": "confirmed",
       "checkInDate": "2025-01-28",
       "checkOutDate": "2025-01-30",

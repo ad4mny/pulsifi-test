@@ -97,7 +97,7 @@
       <tbody>
         <ng-container *ngIf="filteredBookings().length !== 0; else emptyResult">
           <tr *ngFor="let booking of filteredBookings(); let i = index">
-            <td class="capitalize">{{ i + 1 }}</td>
+            <td class="capitalize">{{ (currentPage - 1) * itemPerPage + (i + 1) }}</td>
             <td class="capitalize">{{ booking.destination?.name }}</td>
             <td>
               <span class="badge capitalize" [ngClass]="{ 'badge-success': booking.status === 'confirmed' }">
@@ -124,7 +124,7 @@
               </div>
             </td>
             <td>
-              <span class="whitespace-nowrap break-keep">{{ booking.roomType }} Room</span>
+              <span class="whitespace-nowrap break-keep capitalize">{{ booking.roomType }} Room</span>
             </td>
             <td>
               <div class="flex items-center gap-2">
@@ -136,6 +136,12 @@
         </ng-container>
       </tbody>
     </table>
+  </div>
+  <div class="mt-10 flex justify-center">
+    <app-pagination
+      [totalItems]="totalItems"
+      [currentPage]="currentPage"
+      (pageChange)="onPageChange($event)"></app-pagination>
   </div>
 </div>
 

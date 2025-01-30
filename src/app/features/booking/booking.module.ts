@@ -12,6 +12,7 @@ import { ViewBookingComponent } from './view-booking/view-booking.component';
 import { BookingRoutingModule } from './booking-routing.module';
 import { DialogSingleActionComponent } from 'src/app/core/components/dialog/dialog-single-action/dialog-single-action.component';
 import { AcIfDirective } from 'src/app/core/directives/ac-if.directive';
+import { PaginationComponent } from 'src/app/core/components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AcIfDirective } from 'src/app/core/directives/ac-if.directive';
     Step3Component,
     ListBookingComponent,
     ViewBookingComponent,
+    PaginationComponent,
   ],
   imports: [
     CommonModule,
