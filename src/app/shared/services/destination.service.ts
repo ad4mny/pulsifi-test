@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { Destination } from '../features/booking/booking.model';
+import { Destination } from 'src/app/features/booking/booking.model';
 
 @Injectable({
   providedIn: 'root',

@@ -81,6 +81,18 @@
       "addOns": "Wi-fi",
       "cancelReason": "",
       "cancelBy": ""
+    },
+    {
+      "id": 868,
+      "checkInDate": "2025-01-30",
+      "checkOutDate": "2025-01-30",
+      "userId": 2,
+      "status": "confirmed",
+      "cancelBy": "",
+      "cancelReason": "",
+      "roomType": "suite",
+      "addOns": "1",
+      "destinationId": 2
     }
   ],
   "transactions": [

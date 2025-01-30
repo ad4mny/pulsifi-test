@@ -4,7 +4,7 @@ import { BookingService } from '../booking.service';
 import { Booking, BookingFilters } from '../booking.model';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { sortData } from 'src/app/utils/sort-utils';
-import { DestinationService } from 'src/app/services/destination.service';
+import { DestinationService } from 'src/app/shared/services/destination.service';
 
 @Component({
   selector: 'app-list-booking',
