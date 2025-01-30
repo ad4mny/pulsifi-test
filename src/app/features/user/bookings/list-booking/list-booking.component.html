@@ -1,8 +1,4 @@
-<div *ngIf="filteredBookings.length === 0">
-  <p>No bookings found for the current user.</p>
-</div>
-
-<div *ngIf="filteredBookings.length > 0" class="mt-10 grid gap-6">
+<div class="mt-10 grid gap-6">
   <h3 class="text-2xl font-semibold">Your Bookings</h3>
   <div class="flex gap-2">
     <label class="form-control w-full max-w-xs">
@@ -19,20 +15,28 @@
       <div class="label">
         <span class="label-text">Check In</span>
       </div>
-      <input type="date" class="input input-bordered w-full max-w-xs" (change)="checkInFilter()" />
+      <input
+        type="date"
+        class="input input-bordered w-full max-w-xs"
+        [(ngModel)]="filters.checkInDate"
+        (change)="loadBookings()" />
     </label>
     <label class="form-control w-full max-w-xs">
       <div class="label">
         <span class="label-text">Check Out</span>
       </div>
-      <input type="date" class="input input-bordered w-full max-w-xs" (change)="checkOutFilter()" />
+      <input
+        type="date"
+        class="input input-bordered w-full max-w-xs"
+        [(ngModel)]="filters.checkOutDate"
+        (change)="loadBookings()" />
     </label>
     <label class="form-control w-full max-w-xs">
       <div class="label">
         <span class="label-text">Booking Status</span>
       </div>
-      <select class="select select-bordered">
-        <option disabled selected>All</option>
+      <select class="select select-bordered" [(ngModel)]="filters.status" (change)="loadBookings()">
+        <option value="all">All</option>
         <option value="confirmed">Confirmed</option>
         <option value="pending">Pending</option>
         <option value="cancelled">Cancelled</option>
@@ -74,42 +78,48 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let booking of filteredBookings; let i = index">
-          <td class="capitalize">{{ i + 1 }}</td>
-          <td class="capitalize">{{ booking.destination.name }}</td>
-          <td>
-            <span class="badge capitalize" [ngClass]="{ 'badge-success': booking.status === 'confirmed' }">
-              {{ booking.status }}
-            </span>
-          </td>
-          <td>
-            <div class="flex w-full items-center gap-1">
-              <p class="whitespace-nowrap break-keep">{{ booking.checkInDate | date: 'd MMM y' }}</p>
-              <span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
-                </svg>
+        <ng-container *ngIf="filteredBookings().length !== 0; else emptyResult">
+          <tr *ngFor="let booking of filteredBookings(); let i = index">
+            <td class="capitalize">{{ i + 1 }}</td>
+            <td class="capitalize">{{ booking.destination.name }}</td>
+            <td>
+              <span class="badge capitalize" [ngClass]="{ 'badge-success': booking.status === 'confirmed' }">
+                {{ booking.status }}
               </span>
-              <p class="whitespace-nowrap break-keep">
-                {{ booking.checkOutDate | date: 'd MMM y' }}
-              </p>
-            </div>
-          </td>
-          <td>
-            <span class="whitespace-nowrap break-keep">{{ booking.roomType }} Room</span>
-          </td>
-          <td>
-            <!-- <button (click)="cancelBooking(booking.id)">Cancel</button> -->
-            <button class="link">View</button>
-          </td>
-        </tr>
+            </td>
+            <td>
+              <div class="flex w-full items-center gap-1">
+                <p class="whitespace-nowrap break-keep">{{ booking.checkInDate | date: 'd MMM y' }}</p>
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                  </svg>
+                </span>
+                <p class="whitespace-nowrap break-keep">
+                  {{ booking.checkOutDate | date: 'd MMM y' }}
+                </p>
+              </div>
+            </td>
+            <td>
+              <span class="whitespace-nowrap break-keep">{{ booking.roomType }} Room</span>
+            </td>
+            <td>
+              <!-- <button (click)="cancelBooking(booking.id)">Cancel</button> -->
+              <button class="link">View</button>
+            </td>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
   </div>
 </div>
+
+<ng-template #emptyResult>
+  <tr><td>No booking founds</td></tr>
+</ng-template>

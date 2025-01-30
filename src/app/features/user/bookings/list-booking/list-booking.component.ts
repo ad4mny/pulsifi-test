@@ -1,8 +1,14 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, of, Subject, switchMap } from 'rxjs';
 import { BookingService } from '../booking.service';
 import { AuthService } from 'src/app/core/auth/auth.service';
 import { sortData } from 'src/app/utils/sort-utils';
+
+interface BookingFilters {
+  checkInDate: string;
+  checkOutDate: string;
+  status: string;
+}
 
 @Component({
   selector: 'app-list-booking',
@@ -10,14 +16,17 @@ import { sortData } from 'src/app/utils/sort-utils';
 })
 export class ListBookingComponent implements OnInit {
   bookings: any[] = [];
-  filteredBookings: any[] = [];
+  filteredBookings = signal(this.bookings);
+
   userId: number = 0;
 
   searchFilter = new Subject<string>();
-  
-  bookingStatusFilter = signal<string>('');
-  checkInFilter = signal<string>('');
-  checkOutFilter = signal<string>('');
+
+  filters: BookingFilters = {
+    checkInDate: '',
+    checkOutDate: '',
+    status: 'all',
+  };
 
   sortBy = signal<string>('checkInDate');
   sortOrders: { [key: string]: 'asc' | 'desc' } = {
@@ -40,37 +49,48 @@ export class ListBookingComponent implements OnInit {
     }
 
     this.loadBookings();
-
-    this.searchFilter
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap((query) => this.bookingService.searchDestination(query)),
-      )
-      .subscribe((response: { id: number; name: string }[]) => {
-        if (response.length > 0) {
-          this.filteredBookings = this.bookings.filter((booking) => {
-            return response.some((destination) => booking.destinationId === destination.id);
-          });
-        } else {
-          this.filteredBookings = this.bookings; // Reset the data
-        }
-      });
+    this.searchDestination();
   }
 
   loadBookings(): void {
-    this.bookingService.getBookings(this.userId).subscribe((bookings) => {
-      this.filteredBookings = this.bookings = bookings;
+    this.bookingService.getBookings(this.userId, this.filters).subscribe((bookings) => {
+      this.filteredBookings.set((this.bookings = bookings));
     });
   }
 
   sort(sortBy: string): void {
     this.sortOrders[sortBy] = this.sortOrders[sortBy] === 'asc' ? 'desc' : 'asc';
-    this.filteredBookings = sortData(this.filteredBookings, sortBy, this.sortOrders[sortBy]);
+    this.filteredBookings.set(sortData(this.filteredBookings(), sortBy, this.sortOrders[sortBy]));
   }
 
   onSearch(event: Event) {
     const element = event.target as HTMLInputElement;
     this.searchFilter.next(element.value);
+  }
+
+  searchDestination() {
+    this.searchFilter
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((query) => {
+          if (!query) {
+            return of(this.bookings);
+          } else {
+            return this.bookingService.searchDestination(query);
+          }
+        }),
+      )
+      .subscribe((response: { id: number; name: string }[]) => {
+        if (response.length > 0) {
+          this.filteredBookings.set(
+            this.bookings.filter((booking) => {
+              return response.some((destination) => booking.destinationId === destination.id);
+            }),
+          );
+        } else {
+          this.filteredBookings.set([]);
+        }
+      });
   }
 }
