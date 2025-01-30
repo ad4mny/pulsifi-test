@@ -2,7 +2,7 @@ import { AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/fo
 import { Observable, of } from 'rxjs';
 import { debounceTime, map, catchError, switchMap, first } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environment/environment';
+import { environment } from 'src/environments/environment';
 
 const apiUrl = environment.apiUrl;
 

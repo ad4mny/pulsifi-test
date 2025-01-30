@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, map, Observable } from 'rxjs';
-import { environment } from 'src/environment/environment';
+import { environment } from 'src/environments/environment';
 import { Booking, BookingFilters } from './booking.model';
 import { AuthService } from 'src/app/core/auth/auth.service';
 
