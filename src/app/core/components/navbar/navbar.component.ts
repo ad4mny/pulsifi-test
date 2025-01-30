@@ -6,6 +6,8 @@ import { AuthService } from '../../auth/auth.service';
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent {
+  canCreateBooking = this.authService.hasPermission('createBooking');
+
   constructor(private authService: AuthService) {}
 
   logout() {

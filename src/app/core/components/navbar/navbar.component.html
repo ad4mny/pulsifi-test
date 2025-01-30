@@ -14,28 +14,36 @@
       </div>
       <ul tabindex="0" class="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow">
         <li>
-          <a routerLink="/user/booking" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a routerLink="bookings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             Recent Booking
           </a>
         </li>
         <li>
-          <a routerLink="/user/booking/new" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a
+            routerLink="bookings/new"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            *ngIf="canCreateBooking">
             New Booking
           </a>
         </li>
       </ul>
     </div>
-    <a class="btn btn-ghost text-xl text-primary font-bold" routerLink="/">h&b.</a>
+    <a class="btn btn-ghost text-xl font-bold text-primary" routerLink="/">h&b.</a>
   </div>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
       <li>
-        <a routerLink="/user/booking" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a routerLink="/bookings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           Recent Booking
         </a>
       </li>
       <li>
-        <a routerLink="/user/booking/new" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a
+          routerLink="/bookings/new"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          *ngIf="canCreateBooking">
           New Booking
         </a>
       </li>
