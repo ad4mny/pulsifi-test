@@ -139,7 +139,7 @@ Make sure you have the following installed:
 
 You can have a look at playground that already been served here:
 
-- [ec2-47-129-60-135.ap-southeast-1.compute.amazonaws.com](ec2-47-129-60-135.ap-southeast-1.compute.amazonaws.com)
+- [AWS EC2](http://ec2-47-129-60-135.ap-southeast-1.compute.amazonaws.com)
 
 For testing purposes, you can use the following credentials:
 
