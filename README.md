@@ -31,10 +31,7 @@ This project is a booking management application built with Angular 16, utilizin
 - **Angular 16:** Front-end framework.
 - **JSON Server:** Mock backend API for development.
 - **DaisyUI:** CSS framework for styling.
-- **TypeScript:** Programming language.
-- **HTML/CSS:** Markup and styling.
 - **Nginx:** Web server for production deployment.
-- **PM2:** Process manager for running JSON Server in production.
 
 ## Setup
 
@@ -96,7 +93,7 @@ Make sure you have the following installed:
 
 ### Serving with Nginx
 
-1. Copy the contents of the `dist/booking-app` folder to your Nginx server's HTML directory (e.g., `/var/www/html`).
+1. Copy the contents of the `dist/pulsifi-test` folder to your Nginx server's HTML directory (e.g., `/var/www/html`).
 
 2. Configure Nginx to serve the Angular application (see example below):
 
@@ -130,7 +127,7 @@ Make sure you have the following installed:
 
    This will ensure that the JSON Server runs persistently in the background.
 
-## Some of the API Endpoints
+## API Endpoints
 
 - `POST /bookings`: Create a new booking (user).
 - `GET /bookings`: Get all bookings (user/admin).
@@ -141,24 +138,17 @@ Make sure you have the following installed:
 
 You can have a look at playground that already been served here:
 
-- [AWS EC2](http://ec2-47-129-60-135.ap-southeast-1.compute.amazonaws.com)
+- [App](http://ec2-47-129-60-135.ap-southeast-1.compute.amazonaws.com)
+- [API](http://ec2-47-129-60-135.ap-southeast-1.compute.amazonaws.com/api)
 
 For testing purposes, you can use the following credentials:
 
 - **Admin:** username: `admin`, password: `123`
-- **User:** username: `user1`, password: `123`
+- **User 1:** username: `user1`, password: `123`
+- **User 2:** username: `user2`, password: `123`
 
 **Note:** In a real application, you should implement proper authentication and authorization mechanisms.
 
 ## Contributing
 
 Contributions are welcome! Feel free to open issues and submit pull requests.
-
-**Key improvements:**
-
-- **Clearer structure:** Uses a standard table of contents and headings.
-- **More detailed setup:** Provides step-by-step instructions for running both the Angular app and the JSON server.
-- **Production deployment details:** Explains how to build for production, configure Nginx, and use PM2.
-- **API endpoint documentation:** Clearly lists the available API endpoints.
-- **Credentials disclaimer:** Adds a note about the importance of proper authentication in a real application.
-- **Contribution guidelines:** Encourages contributions from others.
