@@ -21,7 +21,6 @@ import { AcIfDirective } from 'src/app/core/directives/ac-if.directive';
     Step3Component,
     ListBookingComponent,
     ViewBookingComponent,
-    AcIfDirective,
   ],
   imports: [
     CommonModule,
@@ -30,6 +29,7 @@ import { AcIfDirective } from 'src/app/core/directives/ac-if.directive';
     ReactiveFormsModule,
     BookingRoutingModule,
     DialogSingleActionComponent,
+    AcIfDirective,
   ],
 })
 export class BookingModule {}

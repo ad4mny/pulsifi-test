@@ -48,19 +48,25 @@ export class ListBookingComponent implements OnInit {
       this.userId = currentUser()!.id;
     }
 
+    this.loadFilter(); // Load saved filters and sorting from sessionStorage
     this.loadBookings();
     this.queryDestination();
   }
 
   loadBookings(): void {
-    this.bookingService.getBookings(this.userId, this.filters).subscribe((bookings) => {
-      this.bookings = bookings.map((item) => ({
-        ...item,
-        checkInDate: new Date(item.checkInDate),
-        checkOutDate: new Date(item.checkOutDate),
-        destination: item.destination ?? undefined,
-      }));
-      this.filteredBookings.set(this.bookings); // Renew filteredBookings set
+    this.bookingService.getBookings(this.userId, this.filters).subscribe({
+      next: (bookings) => {
+        this.bookings = bookings.map((item) => ({
+          ...item,
+          checkInDate: new Date(item.checkInDate),
+          checkOutDate: new Date(item.checkOutDate),
+          destination: item.destination ?? undefined,
+        }));
+        this.filteredBookings.set(this.bookings); // Renew filteredBookings set
+      },
+      complete: () => {
+        this.saveFilter();
+      },
     });
   }
 
@@ -101,4 +107,28 @@ export class ListBookingComponent implements OnInit {
   }
 
   cancelBooking(bookingId: number) {}
+
+  saveFilter(): void {
+    const state = {
+      filters: this.filters,
+      sortBy: this.sortBy(),
+      sortOrders: this.sortOrders,
+    };
+    sessionStorage.setItem('bookingFilter', JSON.stringify(state));
+  }
+
+  loadFilter(): void {
+    const storedState = sessionStorage.getItem('bookingFilter');
+    if (storedState) {
+      const parsedState = JSON.parse(storedState);
+      this.filters = parsedState.filters || this.filters;
+      this.sortBy.set(parsedState.sortBy || 'checkInDate');
+      this.sortOrders = parsedState.sortOrders || this.sortOrders;
+    }
+  }
+
+  clearFilter() {
+    sessionStorage.removeItem('bookingFilter');
+    location.reload();
+  }
 }
