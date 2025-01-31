@@ -3,14 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { ForbiddenComponent } from './core/components/forbidden/forbidden.component';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { HomeComponent } from './features/home/home.component';
-import { LoginGuard } from './core/guards/login.guard';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, data: { hideNavbar: true } },
   {
     path: 'login',
     loadComponent: () => import('./core/auth/login/login.component').then((m) => m.LoginComponent),
-    canActivate: [LoginGuard],
+    canActivate: [AuthGuard],
     data: { hideNavbar: true },
   },
   { path: 'bookings', loadChildren: () => import('./features/booking/booking.module').then((m) => m.BookingModule) },
